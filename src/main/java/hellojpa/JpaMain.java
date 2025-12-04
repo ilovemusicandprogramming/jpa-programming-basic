@@ -26,12 +26,16 @@ public class JpaMain {
             member.setTeam(team); // 객체 지향적
             em.persist(member);
 
+            em.flush();
+            em.clear();
+
             // 조회
             Member findMember = em.find(Member.class, member.getId());
+            List<Member> members = findMember.getTeam().getMembers();
 
-            Team findTeam = findMember.getTeam();
-            System.out.println("findTeam = " + findTeam.getName());
-
+            for (Member m : members) {
+                System.out.println("m = " + m.getUsername());
+            }
 
 
             tx.commit();

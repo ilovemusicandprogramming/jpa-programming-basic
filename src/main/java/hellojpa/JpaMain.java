@@ -15,24 +15,17 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member1 = new Member();
-            member1.setUsername("a");
 
-            Member member2 = new Member();
-            member2.setUsername("b");
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
 
-            Member member3 = new Member();
-            member3.setUsername("c");
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setTeamId(team.getId()); //setTeam 외래키 식별자를 직접 다룸 당연히 이 방법 밖에없다 생각했다...
+            em.persist(member);
 
-            System.out.println("============================");
-            em.persist(member1); //1,51 -> 51번 만나면 그떄 50개 call
-            em.persist(member2); //memory
-            em.persist(member3); //memory
-
-            System.out.println("member1 = " + member1.getId());
-            System.out.println("member2 = " + member2.getId());
-            System.out.println("member3 = " + member3.getId());
-            System.out.println("============================");
+            Member findTeamId = em.find(Member.class, member.getId());
 
             tx.commit();
         } catch (Exception e) {

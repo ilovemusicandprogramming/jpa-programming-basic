@@ -17,11 +17,12 @@ public class Member {
     private String username;
 
 //    @Column(name = "TEAM_ID")
-//    private Long teamIdId;
+//    private Long teamId;
 
-    // 객체지향모델링으로 refactoring
+
+    // 일대다 양방향 예시
     @ManyToOne
-    @JoinColumn(name = "TEAM_ID") // 연관관계를 매핑하자
+    @JoinColumn(insertable = false, updatable = false)
     private Team team;
 
     public Long getId() {
@@ -44,7 +45,8 @@ public class Member {
         return team;
     }
 
-    public void setTeam(Team team) {
+    public void changeTeam(Team team) {
         this.team = team;
+        team.getMembers().add(this);
     }
 }

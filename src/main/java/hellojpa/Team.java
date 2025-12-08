@@ -16,7 +16,8 @@ public class Team {
     private String name;
 
     // 양방향 연관관계를 위한 setting, ArrayList 로 초기화하는게 관례
-    @OneToMany(mappedBy = "team")
+    @OneToMany
+    @JoinColumn(name = "TEAM_ID")
     private List<Member> members = new ArrayList<>();
 
     public Long getId() {

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Member {
+public class Member extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,6 @@ public class Member {
     private Locker locker;
 
     @OneToMany
-
     private List<MemberProduct> products = new ArrayList<>();
 
     public Long getId() {

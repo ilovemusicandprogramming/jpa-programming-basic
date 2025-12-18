@@ -26,8 +26,8 @@ public class JpaMain {
             member.getFavoriteFoods().add("족발");
             member.getFavoriteFoods().add("피자");
 
-            member.getAddressHistory().add((new Address("old1", "street", "10000")));
-            member.getAddressHistory().add((new Address("old2", "street", "10000")));
+            member.getAddressHistory().add((new AddressEntity("old1", "street", "10000")));
+            member.getAddressHistory().add((new AddressEntity("old2", "street", "10000")));
 
             em.persist(member);
 
@@ -37,15 +37,16 @@ public class JpaMain {
             System.out.println("=====================================");
             Member findMember = em.find(Member.class, member.getId());
 
-            List<Address> addressHistory = findMember.getAddressHistory();
-            for (Address address : addressHistory) {
-                System.out.println("address.getCity() = " + address.getCity());
-            }
+            // homecity -> newcity : 값 타입의 변경은 새로운 인스턴스로 바꿔야함
+            Address a = findMember.getHomeAddress();
+//            findMember.setHomeAddress(new Address("newCity", a.getStreet(), a.getZipcode()));
 
-            Set<String> favoriteFoods = findMember.getFavoriteFoods();
-            for (String favoriteFood : favoriteFoods) {
-                System.out.println("favoriteFood = " + favoriteFood);
-            }
+            // 치킨 -> 한식 : 단순 string 이기 때문에
+//            findMember.getFavoriteFoods().remove("치킨");
+//            findMember.getFavoriteFoods().add("한식");
+
+//            findMember.getAddressHistory().remove((new Address("old1", "street", "10000")));
+//            findMember.getAddressHistory().add((new Address("newCity1", "street", "10000")));
 
             tx.commit();
         } catch (Exception e) {

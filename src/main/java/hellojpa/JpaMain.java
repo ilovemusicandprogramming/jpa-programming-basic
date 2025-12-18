@@ -1,6 +1,9 @@
 package hellojpa;
 
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.hibernate.Hibernate;
 
 import java.time.LocalDateTime;
@@ -18,12 +21,14 @@ public class JpaMain {
         tx.begin();
 
         try {
-            List<Member> resultList = em.createQuery("select m from Member m where m.username like '%kim%'", Member.class)
-                    .getResultList();
+            //Criteria 사용 준비
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Member> query = cb.createQuery(Member.class);
 
-            for (Member m : resultList) {
-                System.out.println("o = " + m);
-            }
+            Root<Member> m = query.from(Member.class);
+            CriteriaQuery<Member> cq = query.select(m).where(cb.equal(m.get("username"), "kim"));
+            List<Member> resultList = em.createQuery(cq).getResultList();
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
